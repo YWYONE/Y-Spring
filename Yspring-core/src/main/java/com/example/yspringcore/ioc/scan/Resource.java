@@ -1,4 +1,4 @@
-package com.example.yspringcore.resource_scan;
+package com.example.yspringcore.ioc.scan;
 
 /**
  * class file path&name
