@@ -4,6 +4,7 @@ import com.example.yspringcore.ioc.annotation.*;
 import com.example.yspringcore.ioc.exception.IocException;
 import com.example.yspringcore.ioc.scan.ResourceResolver;
 import com.example.yspringcore.ioc.utils.ClassUtils;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class Container {
@@ -91,7 +93,7 @@ public class Container {
                 log.info("define bean {}", beanDef);
                 Configuration configuration=ClassUtils.findAnnotation(clazz,Configuration.class);
                 if(configuration!=null){
-
+                    scanFactoryMethods(name,clazz,beans);
                 }
 
             }
@@ -175,11 +177,72 @@ public class Container {
                         bean.destroyMethod().isEmpty() ? null : bean.destroyMethod(),
                         // @PostConstruct / @PreDestroy method:
                         null, null);
+                addBeanDefinitions(defs,def);
+                log.info("define bean {}", def);
+
 
 
             }
 
         }
+    }
+    /**
+     * Get order by:
+     *
+     * <code>
+     * @Order(100)
+     * @Bean
+     * Hello createHello() {
+     *     return new Hello();
+     * }
+     * </code>
+     */
+    int getOrder(Method method) {
+        Order order = method.getAnnotation(Order.class);
+        return order == null ? Integer.MAX_VALUE : order.value();
+    }
+
+    /**
+     * get BeanDef by name
+     * @param name
+     * @return
+     */
+    @Nullable
+    public BeanDef findBeanDef(String name){
+        return beans.get(name);
+    }
+    /**
+     * get BeanDef by type
+     * @param clazz
+     * @return
+     */
+    @Nullable
+    public BeanDef findBeanDef(Class<?> clazz){
+        List<BeanDef> defs=findBeanDefs(clazz);
+        if(defs.isEmpty()){
+            return null;
+        }else if (defs.size()==1){
+            return defs.get(0);
+        }
+        List<BeanDef> primaryDefs=defs.stream().filter(def-> def.isPrimary()).collect(Collectors.toList());
+        if(primaryDefs.isEmpty()){
+            throw new IocException(String.format("Multiple bean with type '%s' found, but no @Primary specified.", clazz.getName()));
+        }else if(primaryDefs.size()==1){
+            return primaryDefs.get(0);
+        }else{
+            throw new IocException(String.format("Multiple bean with type '%s' found, and multiple @Primary specified.", clazz.getName()));
+        }
+    }
+    /**
+     * get BeanDef by name
+     * @param clazz
+     * @return
+     */
+    public List<BeanDef> findBeanDefs(Class<?> clazz){
+        List<BeanDef> rs=beans.values().stream().filter(def->
+            clazz.isAssignableFrom(def.getClass())
+        ).collect(Collectors.toList());
+        return rs;
     }
 
 }
