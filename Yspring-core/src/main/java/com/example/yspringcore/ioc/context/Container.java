@@ -2,6 +2,7 @@ package com.example.yspringcore.ioc.context;
 
 import com.example.yspringcore.ioc.annotation.*;
 import com.example.yspringcore.ioc.exception.IocException;
+import com.example.yspringcore.ioc.scan.PropertyResolver;
 import com.example.yspringcore.ioc.scan.ResourceResolver;
 import com.example.yspringcore.ioc.utils.ClassUtils;
 import jakarta.annotation.Nullable;
@@ -9,20 +10,138 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class Container {
     Map<String, BeanDef> beans;
-    public Container(Class<?> configClass){
+    PropertyResolver propertyResolver;
+    //detect strong circular dependency
+    Set<String> creatingBeanNames;
+    public Container(Class<?> configClass, PropertyResolver propertyResolver){
+        this.propertyResolver=propertyResolver;
         Set<String> beanClassName=scanClassName(configClass);
-        beans=createBeans(beanClassName);
+        beans=createBeanDefs(beanClassName);
+        this.creatingBeanNames=new HashSet<>();
+        createConfigurationFactoryBeans();
+        createNormalBeans();
+
     }
 
+    /**
+     * create @Configuration factory bean
+     */
+    void createConfigurationFactoryBeans(){
+        beans.values().stream().filter(def->this.isConfugurationBean(def)).map(
+                def->{
+                    createSingletonBean(def);
+                    return def;
+                });
+    }
+    /**
+     * create normal bean
+     */
+    void createNormalBeans(){
+        beans.values().forEach(def->{
+            if(def.getInstance()==null){
+                createSingletonBean(def);
+            }
+        });
+    }
+
+    /**
+     * no  setter&field inject
+     * @param def
+     */
+    Object createSingletonBean(BeanDef def){
+        log.info("Try create bean '{}' as  singleton: {}", def.getName(), def.getBeanClass().getName());
+        if(!this.creatingBeanNames.add(def.getName())){
+            throw new IocException(String.format("Strong Circular dependency detected when create bean '%s'", def.getName()));
+        }
+        Executable createFun=null;
+        if(def.getFactoryName()==null){
+            createFun=def.getConstructor();
+        }else{
+            createFun=def.getFactoryMethod();
+        }
+        Parameter[] parameters=createFun.getParameters();
+        Annotation[][] parameterAnnos=createFun.getParameterAnnotations();
+        Object[] args=new Object[parameters.length];
+        //create paramter instances
+        for(int i=0;i<parameters.length;i++){
+            Parameter parameter=parameters[i];
+            Annotation[] annotations=parameterAnnos[i];
+            Value value=ClassUtils.findAnnotation(annotations,Value.class);
+            Autowired autowired=ClassUtils.findAnnotation(annotations,Autowired.class);
+            // Configuration constructor can't use @autowired
+            if(isConfugurationBean(def)&&autowired!=null){
+                throw new IocException(
+                        String.format("Cannot specify @Autowired when create @Configuration bean '%s': %s.", def.getName(), def.getBeanClass().getName()));
+            }
+            // parameters need @Value/@Autowired
+            if (value != null && autowired != null) {
+                throw new IocException(
+                        String.format("Cannot specify both @Autowired and @Value when create bean '%s': %s.", def.getName(), def.getBeanClass().getName()));
+            }
+            if (value == null && autowired == null) {
+                throw new IocException(
+                        String.format("Must specify @Autowired or @Value when create bean '%s': %s.", def.getName(), def.getBeanClass().getName()));
+            }
+            Class type=parameter.getType();
+            if(value!=null){
+                args[i]=this.propertyResolver.getProperty(value.value(),type);
+            }else{
+                //Autowired
+                String name= autowired.name();
+                Boolean isrequired=autowired.value();
+                BeanDef beanDef=null;
+                if(name.isEmpty()){
+                    beanDef=findBeanDef(type);
+
+                }else{
+                    beanDef=findBeanDef(name);
+                }
+                if(beanDef==null&&isrequired){
+                    throw new IocException(String.format("Missing autowired bean with type '%s' when create bean '%s': %s.", type.getName(),
+                            def.getName(), def.getBeanClass().getName()));
+                }
+                if(beanDef!=null){
+                    Object paraminstance=beanDef.getInstance();
+                    if(paraminstance==null){
+                        args[i]=createSingletonBean(beanDef);
+                    }else{
+                        args[i]=paraminstance;
+                    }
+                }else{
+                    args[i]=null;
+                }
+            }
+
+        }
+        //create baen instance
+        Object instance =null;
+        if(def.getFactoryName()==null){
+            try {
+                instance=def.getConstructor().newInstance(args);
+            } catch (Exception e) {
+                throw new IocException(String.format("Exception when create bean '%s': %s", def.getName(), def.getBeanClass().getName()), e);
+            }
+        }else{
+            Object factoryInstance =getBean(def.getFactoryName());
+            try {
+                instance=def.getFactoryMethod().invoke(factoryInstance,args);
+            } catch (Exception e) {
+                throw new IocException(String.format("Exception when create bean '%s': %s", def.getName(), def.getBeanClass().getName()), e);
+            }
+        }
+        def.setInstance(instance);
+        return instance;
+
+
+    }
     public Set<String> scanClassName(Class<?> configClass){
         Set<String> classNameSet=new HashSet<>();
         ComponentScan componentScan= ClassUtils.findAnnotation(configClass, ComponentScan.class);
@@ -64,7 +183,7 @@ public class Container {
         return classNameSet;
 
     }
-    public Map<String, BeanDef> createBeans(Set<String> classNameSet){
+    public Map<String, BeanDef> createBeanDefs(Set<String> classNameSet){
         Map<String, BeanDef> beans=new HashMap<>();
         for(String name:classNameSet){
             Class<?> clazz=null;
@@ -97,8 +216,6 @@ public class Container {
                 }
 
             }
-
-
         }
         return beans;
 
@@ -244,5 +361,24 @@ public class Container {
         ).collect(Collectors.toList());
         return rs;
     }
+
+    public boolean isConfugurationBean(BeanDef beanDef){
+        return ClassUtils.findAnnotation(beanDef.getBeanClass(),Configuration.class)!=null;
+    }
+
+    /**
+     * get bean instance by name
+     * @param name
+     * @param <T>
+     * @return
+     */
+    public <T> T getBean(String name){
+        BeanDef beanDef=this.beans.get(name);
+        if(beanDef==null){
+            throw new IocException(String.format("No bean defined with name '%s'.", name));
+        }
+        return (T) beanDef.getInstance();
+    }
+
 
 }

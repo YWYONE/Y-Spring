@@ -3,6 +3,7 @@ package com.example.yspringcore.ioc.utils;
 import com.example.yspringcore.ioc.annotation.Bean;
 import com.example.yspringcore.ioc.annotation.Component;
 import com.example.yspringcore.ioc.exception.IocException;
+import jakarta.annotation.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -31,6 +32,19 @@ public class ClassUtils {
             }
         }
         return a;
+    }
+    /**
+     *  find Annotation in Anno[]
+     *
+     */
+    @Nullable
+    public static <A extends Annotation> A findAnnotation(Annotation[] annos, Class<A> annoClass) {
+        for(Annotation a:annos){
+            if(annoClass.isInstance(a) ){
+                return (A) a;
+            }
+        }
+        return null;
     }
     /**
      * Get bean name (@Component's value or class's name)
@@ -89,6 +103,7 @@ public class ClassUtils {
         throw new IocException(String.format("Multiple methods with @%s found in class: %s", annoClass.getSimpleName(), clazz.getName()));
 
     }
+
     /**
      * Get bean name by:
      *
