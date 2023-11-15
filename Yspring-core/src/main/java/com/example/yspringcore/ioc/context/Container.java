@@ -21,15 +21,155 @@ public class Container {
     PropertyResolver propertyResolver;
     //detect strong circular dependency
     Set<String> creatingBeanNames;
+    List<BeanPostProcessor> beanPostProcessors=new ArrayList<>();
     public Container(Class<?> configClass, PropertyResolver propertyResolver){
         this.propertyResolver=propertyResolver;
         Set<String> beanClassName=scanClassName(configClass);
         beans=createBeanDefs(beanClassName);
         this.creatingBeanNames=new HashSet<>();
         createConfigurationFactoryBeans();
+        List<BeanPostProcessor> processors=this.beans.values().stream()
+                        .filter(def->this.isBeanPostProcessorDef(def))
+                                .map(def->{
+                                    return (BeanPostProcessor)createSingletonBean(def);
+                                }).collect(Collectors.toList());
+        beanPostProcessors=processors;
         createNormalBeans();
+        this.beans.values().forEach(def->{
+            injectBeans(def,def.getBeanClass());
+        });
+        this.beans.values().forEach(def->{
+            invokeMethod(def.getInstance(),def.getInitMethod(),def.getInitMethodName());
+        });
+    }
+
+    /**
+     * inject dependency
+     * scan clazz's field&setter  inject bean instance(def's instance)
+     * @param def
+     * @param clazz
+     */
+    void injectBeans(BeanDef def,Class<?> clazz){
+        Object targetInstance=getProxiedInstance(def);
+        try{
+            for(Field field:clazz.getDeclaredFields()){
+                injectBean(def,targetInstance,clazz,field);
+            }
+            for(Method method:clazz.getDeclaredMethods()){
+                injectBean(def,targetInstance,clazz,method);
+            }
+            //superClass's dependency inject sonClass instance
+            Class<?> superClazz=clazz.getSuperclass();
+            if(superClazz!=null){
+                injectBeans(def,clazz);
+            }
+        }catch (ReflectiveOperationException e){
+            throw  new IocException(e);
+        }
 
     }
+
+    /**
+     * get def's instance
+     * if be proxy then return origin instance
+     * @param def
+     * @return
+     */
+    Object getProxiedInstance(BeanDef def){
+        Object instance =def.getInstance();
+        //when recursion proxy , reverse and process  to get the origin
+        List<BeanPostProcessor> reversedProcessors=new ArrayList<>(beanPostProcessors);
+        Collections.reverse(reversedProcessors);
+        for(BeanPostProcessor beanPostProcessor:reversedProcessors){
+            Object originInstance=beanPostProcessor.postProcessOnSetProperty(instance,def.getName());
+            if(originInstance!=instance){
+                log.info("BeanPostProcessor {} specified injection from {} to {}.", beanPostProcessor.getClass().getSimpleName(),
+                        instance.getClass().getSimpleName(), originInstance.getClass().getSimpleName());
+                instance=originInstance;
+            }
+        }
+        return instance;
+    }
+    void injectBean(BeanDef beanDef,Object targetInstance,Class<?> clazz,AccessibleObject fieldOrSetter) throws IllegalAccessException, InvocationTargetException {
+        Value value=fieldOrSetter.getAnnotation(Value.class);
+        Autowired autowired=fieldOrSetter.getAnnotation(Autowired.class);
+        Field field=null;
+        Method method=null;
+        if(fieldOrSetter instanceof Field f){
+            checkFieldOrMethod(f);
+            f.setAccessible(true);
+            field=f;
+        }
+        if(fieldOrSetter instanceof Method m){
+            checkFieldOrMethod(m);
+            m.setAccessible(true);
+            method=m;
+        }
+        String name=null;
+        Class<?> type=null;
+        if(field!=null){
+            name=field.getName();
+            type=field.getType();
+        }else{
+            name=method.getName();
+            type=method.getParameterTypes()[0];
+        }
+        if(value!=null&&autowired!=null){
+            throw new IocException(String.format("Cannot specify both @Autowired and @Value when inject %s.%s for bean '%s': %s",
+                    clazz.getSimpleName(), name, beanDef.getName(), beanDef.getBeanClass().getName()));
+        }
+        //@Value
+        if(value!=null){
+            Object instance=this.propertyResolver.getProperty(value.value(),type);
+            if(field!=null){
+                field.set(targetInstance,instance);
+            }else{
+                method.invoke(targetInstance,instance);
+            }
+        }
+        //@Autowired
+        if(autowired!=null){
+            String beanName= autowired.name();
+            boolean required=autowired.value();
+            Object instance=null;
+            if(beanName.isEmpty()){
+                instance=findBean(type);
+            }else{
+                instance=findBean(beanName,type);
+            }
+            if(required&&instance==null){
+                throw  new IocException(String.format("Dependency bean not found when inject %s.%s for bean '%s': %s", clazz.getSimpleName(),
+                        name, beanDef.getName(), beanDef.getBeanClass().getName()));
+            }
+            if(instance!=null){
+                if(field!=null){
+                    field.set(targetInstance,instance);
+                }else if(method!=null){
+                    method.invoke(targetInstance,instance);
+                }
+            }
+        }
+
+
+    }
+    void checkFieldOrMethod(Member member){
+        int mod=member.getModifiers();
+        if(Modifier.isStatic(mod)){
+            throw  new IocException("Cannot inject static field: " + member);
+        }
+        if(Modifier.isFinal(mod)){
+            if(member instanceof Field field){
+                throw new IocException( "Cannot inject final field: " + field);
+            }else if(member instanceof  Method method){
+                //setter just one parameter
+                if(method.getParameterCount()!=1){
+                    throw new IocException(String.format("Cannot inject a non-setter method %s", method.getName()));
+                }
+            }
+        }
+    }
+
+
 
     /**
      * create @Configuration factory bean
@@ -135,6 +275,20 @@ public class Container {
                 instance=def.getFactoryMethod().invoke(factoryInstance,args);
             } catch (Exception e) {
                 throw new IocException(String.format("Exception when create bean '%s': %s", def.getName(), def.getBeanClass().getName()), e);
+            }
+        }
+
+        //call match BeanPostProcessor
+        for(BeanPostProcessor processor:beanPostProcessors){
+            Object convertInstance=processor.postProcessBeforeInitialization(instance,def.getName());
+            if(convertInstance==null){
+                throw  new IocException(String.format("PostBeanProcessor returns null when process bean '%s' by %s", def.getName(), processor));
+
+            }
+            //match
+            if(instance!=convertInstance){
+                log.info("Bean '{}' was replaced by post processor {}.", def.getName(), processor.getClass().getName());
+                def.setInstance(convertInstance);
             }
         }
         def.setInstance(instance);
@@ -329,6 +483,24 @@ public class Container {
         return beans.get(name);
     }
     /**
+     * get BeanDef by name & type
+     * check type match
+     * @param name
+     * @param type
+     * @return
+     */
+    @Nullable
+    public BeanDef findBeanDef(String name,Class <?> type){
+        BeanDef beanDef=beans.get(name);
+        if(beanDef==null){
+            return null;
+        }else if(!type.isAssignableFrom(beanDef.getBeanClass())){
+            throw  new IocException(String.format("Autowire required type '%s' but bean '%s' has actual type '%s'.", type.getName(),
+                    name, beanDef.getBeanClass().getName()));
+        }
+        return beanDef;
+    }
+    /**
      * get BeanDef by type
      * @param clazz
      * @return
@@ -351,7 +523,7 @@ public class Container {
         }
     }
     /**
-     * get BeanDef by name
+     * get BeanDefs by type
      * @param clazz
      * @return
      */
@@ -365,9 +537,13 @@ public class Container {
     public boolean isConfugurationBean(BeanDef beanDef){
         return ClassUtils.findAnnotation(beanDef.getBeanClass(),Configuration.class)!=null;
     }
+    boolean isBeanPostProcessorDef(BeanDef def){
+        return  BeanPostProcessor.class.isAssignableFrom(def.getBeanClass());
+    }
 
     /**
-     * get bean instance by name
+     * get factory bean instance by name
+     * not exist throw exception
      * @param name
      * @param <T>
      * @return
@@ -378,6 +554,62 @@ public class Container {
             throw new IocException(String.format("No bean defined with name '%s'.", name));
         }
         return (T) beanDef.getInstance();
+    }
+
+    /**
+     * get bean instance by type
+     * @param type
+     * @return
+     * @param <T>
+     */
+    @Nullable
+    public <T> T findBean(Class<T>  type){
+        BeanDef beanDef=findBeanDef(type);
+        if(beanDef==null){
+            return null;
+        }
+        return (T) beanDef.getInstance();
+    }
+
+    /**
+     * get bean instance by type & name
+     *
+     * @param name
+     * @param type
+     * @return
+     * @param <T>
+     */
+    @Nullable
+    public <T> T findBean(String  name,Class<T>  type){
+        BeanDef beanDef=findBeanDef(name,type);
+        if(beanDef==null){
+            return null;
+        }
+        return (T) beanDef.getInstance();
+    }
+
+    /**
+     * invoke @PostConstruct or @PreDestroy method
+     * @param instance
+     * @param method
+     * @param methodName
+     */
+    void invokeMethod(Object instance,Method method,String methodName){
+        if(method!=null){
+            try {
+                method.invoke(instance);
+            } catch (ReflectiveOperationException e) {
+                throw new IocException(e);
+            }
+        }else if(methodName!=null){
+            try {
+                Method namedMethod=instance.getClass().getDeclaredMethod(methodName);
+                namedMethod.setAccessible(true);
+                namedMethod.invoke(instance);
+            } catch (ReflectiveOperationException e) {
+                throw new IocException(e);
+            }
+        }
     }
 
 

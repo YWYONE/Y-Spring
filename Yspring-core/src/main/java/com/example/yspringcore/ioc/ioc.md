@@ -50,4 +50,6 @@ public class A {
 <font color=red>circular dependency  solvable</font>
 A()  B() a.b=b b.a=a
 
+@Bean创建的不是单例
+
 
