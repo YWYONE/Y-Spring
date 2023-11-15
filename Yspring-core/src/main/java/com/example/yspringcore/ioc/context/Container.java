@@ -4,6 +4,7 @@ import com.example.yspringcore.ioc.annotation.*;
 import com.example.yspringcore.ioc.exception.IocException;
 import com.example.yspringcore.ioc.scan.PropertyResolver;
 import com.example.yspringcore.ioc.scan.ResourceResolver;
+import com.example.yspringcore.ioc.utils.ApplicationContextUtils;
 import com.example.yspringcore.ioc.utils.ClassUtils;
 import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
@@ -16,13 +17,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class Container {
+public class Container implements ConfigurableApplicationContext{
     Map<String, BeanDef> beans;
     PropertyResolver propertyResolver;
     //detect strong circular dependency
     Set<String> creatingBeanNames;
     List<BeanPostProcessor> beanPostProcessors=new ArrayList<>();
     public Container(Class<?> configClass, PropertyResolver propertyResolver){
+        ApplicationContextUtils.setApplicationContext(this);
         this.propertyResolver=propertyResolver;
         Set<String> beanClassName=scanClassName(configClass);
         beans=createBeanDefs(beanClassName);
@@ -196,7 +198,7 @@ public class Container {
      * no  setter&field inject
      * @param def
      */
-    Object createSingletonBean(BeanDef def){
+    public Object createSingletonBean(BeanDef def){
         log.info("Try create bean '{}' as  singleton: {}", def.getName(), def.getBeanClass().getName());
         if(!this.creatingBeanNames.add(def.getName())){
             throw new IocException(String.format("Strong Circular dependency detected when create bean '%s'", def.getName()));
@@ -588,6 +590,11 @@ public class Container {
         return (T) beanDef.getInstance();
     }
 
+    @Nullable
+    public <T> List<T> findBeans(Class<T> requiredType) {
+        return findBeanDefs(requiredType).stream().map(def -> (T) def.getRequiredInstance()).collect(Collectors.toList());
+    }
+
     /**
      * invoke @PostConstruct or @PreDestroy method
      * @param instance
@@ -610,6 +617,18 @@ public class Container {
                 throw new IocException(e);
             }
         }
+    }
+    @Override
+    public boolean containsBean(String name) {
+        return this.beans.containsKey(name);
+    }
+    public void close(){
+        this.beans.values().forEach(def->{
+            Object instance=getProxiedInstance(def);
+            invokeMethod(instance,def.getDestroyMethod(),def.getDestroyMethodName());
+        });
+        this.beans.clear();
+        ApplicationContextUtils.setApplicationContext(null);
     }
 
 
