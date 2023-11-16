@@ -63,7 +63,7 @@ public class Container implements ConfigurableApplicationContext{
             //superClass's dependency inject sonClass instance
             Class<?> superClazz=clazz.getSuperclass();
             if(superClazz!=null){
-                injectBeans(def,clazz);
+                injectBeans(def,superClazz);
             }
         }catch (ReflectiveOperationException e){
             throw  new IocException(e);
@@ -95,6 +95,10 @@ public class Container implements ConfigurableApplicationContext{
     void injectBean(BeanDef beanDef,Object targetInstance,Class<?> clazz,AccessibleObject fieldOrSetter) throws IllegalAccessException, InvocationTargetException {
         Value value=fieldOrSetter.getAnnotation(Value.class);
         Autowired autowired=fieldOrSetter.getAnnotation(Autowired.class);
+        //nothing inject
+        if (value == null && autowired == null) {
+            return;
+        }
         Field field=null;
         Method method=null;
         if(fieldOrSetter instanceof Field f){
@@ -112,7 +116,7 @@ public class Container implements ConfigurableApplicationContext{
         if(field!=null){
             name=field.getName();
             type=field.getType();
-        }else{
+        }else if(method!=null){
             name=method.getName();
             type=method.getParameterTypes()[0];
         }
@@ -465,7 +469,6 @@ public class Container implements ConfigurableApplicationContext{
      * <code>
      * @Order(100)
      * @Bean
-     * Hello createHello() {
      *     return new Hello();
      * }
      * </code>
@@ -531,7 +534,7 @@ public class Container implements ConfigurableApplicationContext{
      */
     public List<BeanDef> findBeanDefs(Class<?> clazz){
         List<BeanDef> rs=beans.values().stream().filter(def->
-            clazz.isAssignableFrom(def.getClass())
+            clazz.isAssignableFrom(def.getBeanClass())
         ).collect(Collectors.toList());
         return rs;
     }

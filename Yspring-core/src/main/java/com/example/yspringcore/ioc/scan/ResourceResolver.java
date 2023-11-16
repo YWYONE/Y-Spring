@@ -33,7 +33,7 @@ public class ResourceResolver {
 
     /**
      *
-     * @param mapper  caller define convert ops
+     * @param mapper   customize mapper function
      * @return
      * @param <R>
      */
