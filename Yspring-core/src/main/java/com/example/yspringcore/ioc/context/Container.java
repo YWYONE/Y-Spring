@@ -372,7 +372,7 @@ public class Container implements ConfigurableApplicationContext{
                 log.info("define bean {}", beanDef);
                 Configuration configuration=ClassUtils.findAnnotation(clazz,Configuration.class);
                 if(configuration!=null){
-                    scanFactoryMethods(name,clazz,beans);
+                    scanFactoryMethods(beanName,clazz,beans);
                 }
 
             }
