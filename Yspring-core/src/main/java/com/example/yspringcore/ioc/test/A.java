@@ -7,6 +7,7 @@ import com.example.yspringcore.ioc.annotation.Component;
 public class A {
     @Autowired
     B b;
+
     void run(){
         System.out.println("a call b");
         b.run();

@@ -37,9 +37,9 @@ public class Container implements ConfigurableApplicationContext{
                                 }).collect(Collectors.toList());
         beanPostProcessors=processors;
         createNormalBeans();
-        this.beans.values().forEach(def->{
-            injectBeans(def,def.getBeanClass());
-        });
+//        this.beans.values().forEach(def->{
+//            injectBeans(def,def.getBeanClass());
+//        });
         this.beans.values().forEach(def->{
             invokeMethod(def.getInstance(),def.getInitMethod(),def.getInitMethodName());
         });
@@ -138,14 +138,20 @@ public class Container implements ConfigurableApplicationContext{
             String beanName= autowired.name();
             boolean required=autowired.value();
             Object instance=null;
+            BeanDef injectedBeanDef=null;
             if(beanName.isEmpty()){
                 instance=findBean(type);
+                injectedBeanDef=findBeanDef(type);
             }else{
                 instance=findBean(beanName,type);
+                injectedBeanDef=findBeanDef(beanName,type);
             }
             if(required&&instance==null){
-                throw  new IocException(String.format("Dependency bean not found when inject %s.%s for bean '%s': %s", clazz.getSimpleName(),
-                        name, beanDef.getName(), beanDef.getBeanClass().getName()));
+                instance=createSingletonBean(injectedBeanDef);
+                if(instance==null){
+                    throw  new IocException(String.format("Dependency bean not found when inject %s.%s for bean '%s': %s", clazz.getSimpleName(),
+                            name, beanDef.getName(), beanDef.getBeanClass().getName()));
+                }
             }
             if(instance!=null){
                 if(field!=null){
@@ -283,7 +289,7 @@ public class Container implements ConfigurableApplicationContext{
                 throw new IocException(String.format("Exception when create bean '%s': %s", def.getName(), def.getBeanClass().getName()), e);
             }
         }
-
+        def.setInstance(instance);
         //call match BeanPostProcessor
         for(BeanPostProcessor processor:beanPostProcessors){
             Object convertInstance=processor.postProcessBeforeInitialization(instance,def.getName());
@@ -297,7 +303,8 @@ public class Container implements ConfigurableApplicationContext{
                 def.setInstance(convertInstance);
             }
         }
-        def.setInstance(instance);
+        injectBeans(def,def.getBeanClass());
+
         return instance;
 
 

@@ -26,10 +26,16 @@ class Application(){}
 3. create beanDefs of @Component (and @Configuration with @Bean method )  
 <font color=red> recursion find @Component </font> because some annnotations such as @Configuration has @Component
 ### Bean instance create
-1. create factory beans
-2. create normal beans(inject strong dependency)
-3. convert customize proxy bean 
-4. inject weak dependency
+1. create factory beans  
+    1.1 create bean instance  
+    1.2 inject weak dependency
+2. create normal beans  
+    2.1 inject strong dependency  
+    2.2 create bean instance  
+    2.3 convert customize proxy bean    
+    2.4 inject weak dependency
+3. init all beans
+
 ## dependency injection
 ### Strong dependence
 A bean instance  creatation depends B dependency injection  
@@ -78,10 +84,18 @@ public class A {
     B b;
 }
 ````
-<font color=red>circular dependency  solvable</font>  
-A()  B() a.b=b b.a=a   
-first create instance   (strong dependency injection,detect circular dependency and report  error)  
-second weak dependency injection 
+<font color=red>circular dependency  solvable</font>A()  B() a.b=b b.a=a  
+### circular dependency solution
+![](./beanCreate.jpg)
+bean creation includes 3 steps
+1. strong dependency injection
+detect circular dependency through a HashSet with BeanDef names and report error .
+2. create instance
+set instance(not with weak dependency) int the BeanDefs cache
+3.  weak dependency injection
+get injected instance from Beandefs cache
+
+
 ## FAQ
 ### singleton Bean vs singleton Class
 create one bean per bean identifier in a container and create multiple singleton beans from the same class   
