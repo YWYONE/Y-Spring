@@ -78,8 +78,10 @@ public class A {
     B b;
 }
 ````
-<font color=red>circular dependency  solvable</font>
-A()  B() a.b=b b.a=a
+<font color=red>circular dependency  solvable</font>  
+A()  B() a.b=b b.a=a   
+first create instance   (strong dependency injection,detect circular dependency and report  error)  
+second weak dependency injection 
 ## FAQ
 ### singleton Bean vs singleton Class
 create one bean per bean identifier in a container and create multiple singleton beans from the same class   
