@@ -187,11 +187,18 @@ public class Container implements ConfigurableApplicationContext{
      * create @Configuration factory bean
      */
     void createConfigurationFactoryBeans(){
-        beans.values().stream().filter(def->this.isConfugurationBean(def)).map(
-                def->{
+//        for(BeanDef def:beans.values()){
+//            if(isConfugurationBean(def)){
+//                 createSingletonBean(def);
+//            }
+//        }
+        this.beans.values().stream()
+                //@Configuration:
+                .filter(def->this.isConfugurationBean(def)).map(
+                        def -> {
                     createSingletonBean(def);
                     return def;
-                });
+                }).collect(Collectors.toList());//must collect because new data is in stream
     }
     /**
      * create normal bean
@@ -359,6 +366,7 @@ public class Container implements ConfigurableApplicationContext{
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+            // these classes not bean
             if (clazz.isAnnotation() || clazz.isEnum() || clazz.isInterface() || clazz.isRecord()) {
                 continue;
             }

@@ -1,8 +1,6 @@
 package com.example.yspringcore.ioc.context;
 
-/**
- * Ioc util class (non singleton)
- */
+
 public interface BeanPostProcessor {
 
     /**
@@ -20,7 +18,7 @@ public interface BeanPostProcessor {
     }
 
     /**
-     * Invoked before bean.setXyz() called.
+     * Invoked before bean.setXyz() called.   take proxy->origin
      */
     default Object postProcessOnSetProperty(Object bean, String beanName) {
         return bean;

@@ -47,7 +47,7 @@ public class ClassUtils {
         return null;
     }
     /**
-     * Get bean name (@Component's value or class's name)
+     * Get bean name (@Component's value or class's name with lowerCase first letter)
      *
      * <code>
      * @Component

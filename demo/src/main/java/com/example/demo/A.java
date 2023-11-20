@@ -14,7 +14,7 @@ public class A {
     B b;
     void run(){
         System.out.println("a call b");
-        b.run();
+        //b.run();
 
     }
 }

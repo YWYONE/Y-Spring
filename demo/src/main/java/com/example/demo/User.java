@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class User {
     public User(@Autowired A a){
         System.out.println("User is creating");
-        a.run();
+        //a.run();
     }
     public static void run(){
         System.out.println("dsfdsfsdfdsfds");
