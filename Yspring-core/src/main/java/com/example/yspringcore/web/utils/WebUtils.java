@@ -1,4 +1,4 @@
-package com.example.yspringcore.boot;
+package com.example.yspringcore.web.utils;
 
 import com.example.yspringcore.ioc.scan.PropertyResolver;
 import com.example.yspringcore.ioc.utils.ClassPathUtils;
@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 @Slf4j
 public class WebUtils {
+    public static final String DEFAULT_PARAM_VALUE = "\0\t\0\t\0";
     static final String CONFIG_APP_YAML = "/application.yml";
     static final String CONFIG_APP_PROP = "/application.properties";
     /**

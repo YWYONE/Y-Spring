@@ -12,7 +12,7 @@ import java.util.Objects;
 public class BeanDef implements Comparable<BeanDef>{
     // global unique Bean Name:
     private final String name;
-    // Bean's  Declaration type
+    // Bean's  Declaration type(can be different from instance's real type eg. @Configuration@Bean subclass)
     private final Class<?> beanClass;
     // Bean 's instance
     private Object instance = null;
