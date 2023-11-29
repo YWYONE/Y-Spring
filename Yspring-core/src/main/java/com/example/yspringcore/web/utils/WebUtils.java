@@ -1,8 +1,11 @@
 package com.example.yspringcore.web.utils;
 
 import com.example.yspringcore.ioc.scan.PropertyResolver;
+import com.example.yspringcore.ioc.utils.ApplicationContextUtils;
 import com.example.yspringcore.ioc.utils.ClassPathUtils;
 import com.example.yspringcore.ioc.utils.YamlUtils;
+import com.example.yspringcore.web.DispatcherServlet;
+import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
@@ -14,6 +17,13 @@ public class WebUtils {
     public static final String DEFAULT_PARAM_VALUE = "\0\t\0\t\0";
     static final String CONFIG_APP_YAML = "/application.yml";
     static final String CONFIG_APP_PROP = "/application.properties";
+    public static void registerDispatcherServlet(ServletContext servletContext, PropertyResolver properyResolver) {
+        var dispatcherServlet = new DispatcherServlet(ApplicationContextUtils.getRequiredApplicationContext(), properyResolver);
+        log.info("register servlet {} for URL '/'", dispatcherServlet.getClass().getName());
+        var dispatcherReg = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
+        dispatcherReg.addMapping("/");
+        dispatcherReg.setLoadOnStartup(0);
+    }
     /**
      * Try load property resolver from /application.yml or /application.properties.
      */

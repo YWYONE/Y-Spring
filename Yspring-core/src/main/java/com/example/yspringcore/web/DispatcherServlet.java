@@ -7,6 +7,7 @@ import com.example.yspringcore.web.annotation.Controller;
 import com.example.yspringcore.web.annotation.GetMapping;
 import com.example.yspringcore.web.annotation.PostMapping;
 import com.example.yspringcore.web.annotation.RestController;
+import com.example.yspringcore.web.exception.WebException;
 import com.example.yspringcore.web.utils.JsonUtils;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -22,6 +23,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.http.WebSocketHandshakeException;
 import java.util.ArrayList;
 import java.util.List;
 @Slf4j
@@ -37,7 +39,7 @@ public class DispatcherServlet extends HttpServlet {
     List<Processor> postProcessors = new ArrayList<>();
     public DispatcherServlet(ApplicationContext applicationContext, PropertyResolver properyResolver) {
         this.applicationContext = applicationContext;
-        this.viewResolver = applicationContext.getBean(ViewResolver.class);
+        this.viewResolver = applicationContext.findBean(ViewResolver.class);
         this.resourcePath = properyResolver.getProperty("${y-spring.web.static-path:/static/}");
         this.faviconPath = properyResolver.getProperty("${y-spring.web.favicon-path:/favicon.ico}");
         if (!this.resourcePath.endsWith("/")) {
@@ -123,86 +125,105 @@ public class DispatcherServlet extends HttpServlet {
             if(inputStream==null){
                 resp.sendError(404,"resource not found");
             }else{
-
+                // guess content type:
+                String file = url;
+                int n = url.lastIndexOf('/');
+                if (n >= 0) {
+                    file = url.substring(n + 1);
+                }
+                String mime = servletContext.getMimeType(file);
+                if (mime == null) {
+                    mime = "application/octet-stream";
+                }
+                resp.setContentType(mime);
+                ServletOutputStream output = resp.getOutputStream();
+                inputStream.transferTo(output);
+                output.flush();
             }
         }
     }
-    void doProcess(HttpServletRequest req,HttpServletResponse resp,List<Processor> processors) throws Exception{
-        for(Processor processor:processors){
-            Result result=processor.process(req,resp);
-            //match
-            if(result.processed()){
-                Object rs=result.returnObject();
-                if(processor.isRest){
-                    // send rest response:
-                    if (!resp.isCommitted()) {
-                        resp.setContentType("application/json");
-                    }
-                    if(processor.isResponseBody){
-                        if(rs instanceof String s){
-                            PrintWriter pw=resp.getWriter();
-                            pw.write(s);
-                            pw.flush();
-                        }else if (rs instanceof byte[] data) {
-                            ServletOutputStream output = resp.getOutputStream();
-                            output.write(data);
-                            output.flush();
-                        }else {
-                            // error:
-                            throw new ServletException("Unable to process REST result when handle url: " + url);
+    void doProcess(HttpServletRequest req,HttpServletResponse resp,List<Processor> processors) throws ServletException, IOException{
+        try {
+            for (Processor processor : processors) {
+                Result result = processor.process(req, resp);
+                //match
+                if (result.processed()) {
+                    Object rs = result.returnObject();
+                    if (processor.isRest) {
+                        // send rest response:
+                        if (!resp.isCommitted()) {
+                            resp.setContentType("application/json");
                         }
-                    }else if (!processor.isVoid) {
+                        if (processor.isResponseBody) {
+                            if (rs instanceof String s) {
+                                PrintWriter pw = resp.getWriter();
+                                pw.write(s);
+                                pw.flush();
+                            } else if (rs instanceof byte[] data) {
+                                ServletOutputStream output = resp.getOutputStream();
+                                output.write(data);
+                                output.flush();
+                            } else {
+                                // error:
+                                throw new ServletException("Unable to process REST result when handle url: " + req.getRequestURI());
+                            }
+                        } else if (!processor.isVoid) {
                             PrintWriter pw = resp.getWriter();
                             JsonUtils.writeJson(pw, rs);
                             pw.flush();
-                    }
+                        }
 
-                }else{
-                    //mvc rendering
-                    if (!resp.isCommitted()) {
-                        resp.setContentType("text/html");
-                    }
-                    if(rs instanceof String s){
-                        if(processor.isResponseBody){
-                            // send as response body:
-                            PrintWriter pw = resp.getWriter();
-                            pw.write(s);
-                            pw.flush();
-                        }else if (s.startsWith("redirect:")) {
-                            // send redirect:
-                            resp.sendRedirect(s.substring(9));
-                        }else {
+                    } else {
+                        //mvc rendering
+                        if (!resp.isCommitted()) {
+                            resp.setContentType("text/html");
+                        }
+                        if (rs instanceof String s) {
+                            if (processor.isResponseBody) {
+                                // send as response body:
+                                PrintWriter pw = resp.getWriter();
+                                pw.write(s);
+                                pw.flush();
+                            } else if (s.startsWith("redirect:")) {
+                                // send redirect:
+                                resp.sendRedirect(s.substring(9));
+                            } else {
+                                // error:
+                                throw new ServletException("Unable to process String result when handle url: " + req.getRequestURI());
+                            }
+                        } else if (rs instanceof byte[] data) {
+                            if (processor.isResponseBody) {
+                                // send as response body:
+                                ServletOutputStream output = resp.getOutputStream();
+                                output.write(data);
+                                output.flush();
+                            } else {
+                                // error:
+                                throw new ServletException("Unable to process byte[] result when handle url: " + req.getRequestURI());
+                            }
+                        } else if (rs instanceof ModelAndView mv) {
+                            String view = mv.getViewName();
+                            if (view.startsWith("redirect:")) {
+                                // send redirect:
+                                resp.sendRedirect(view.substring(9));
+                            } else {
+                                this.viewResolver.render(view, mv.getModel(), req, resp);
+                            }
+                        } else if (!processor.isVoid && rs != null) {
                             // error:
-                            throw new ServletException("Unable to process String result when handle url: " + req.getRequestURI());
+                            throw new ServletException("Unable to process " + rs.getClass().getName() + " result when handle url: " + req.getRequestURI());
                         }
-                    }else if (rs instanceof byte[] data) {
-                        if (processor.isResponseBody) {
-                            // send as response body:
-                            ServletOutputStream output = resp.getOutputStream();
-                            output.write(data);
-                            output.flush();
-                        } else {
-                            // error:
-                            throw new ServletException("Unable to process byte[] result when handle url: " + req.getRequestURI());
-                        }
-                    }else if (rs instanceof ModelAndView mv) {
-                        String view = mv.getViewName();
-                        if (view.startsWith("redirect:")) {
-                            // send redirect:
-                            resp.sendRedirect(view.substring(9));
-                        } else {
-                            this.viewResolver.render(view, mv.getModel(), req, resp);
-                        }
-                    }else if (!processor.isVoid && rs != null) {
-                        // error:
-                        throw new ServletException("Unable to process " + rs.getClass().getName() + " result when handle url: " + req.getRequestURI());
                     }
+                    return;
                 }
-                return;
             }
+            // not found:
+            resp.sendError(404, "Not Found");
+        }catch (RuntimeException | ServletException | IOException e){
+            throw e;
+        }catch (Exception e){
+            throw  new WebException();
         }
-        // not found:
-        resp.sendError(404, "Not Found");
 
     }
 
