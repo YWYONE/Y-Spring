@@ -47,7 +47,7 @@ public class YSpringApplication {
         webResourceRoot.addPreResources(new DirResourceSet(webResourceRoot,"/WEB-INF/classes",new File(baseDir).getAbsolutePath(),"/"));
         ctx.setResources(webResourceRoot);
         // setup ServletContainerInitializer listener
-        //ctx.addServletContainerInitializer(new ContextLoaderInitializer(configClass, propertyResolver), Set.of());
+        ctx.addServletContainerInitializer(new ContextLoaderInitializer(configClass, propertyResolver), Set.of());
         tomcat.start();
         log.info("Tomcat started at port {}...", port);
         return  tomcat.getServer();

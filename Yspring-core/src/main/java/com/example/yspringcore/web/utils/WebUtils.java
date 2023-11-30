@@ -5,13 +5,14 @@ import com.example.yspringcore.ioc.utils.ApplicationContextUtils;
 import com.example.yspringcore.ioc.utils.ClassPathUtils;
 import com.example.yspringcore.ioc.utils.YamlUtils;
 import com.example.yspringcore.web.DispatcherServlet;
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
 import java.io.UncheckedIOException;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
+
 @Slf4j
 public class WebUtils {
     public static final String DEFAULT_PARAM_VALUE = "\0\t\0\t\0";
@@ -24,6 +25,20 @@ public class WebUtils {
         dispatcherReg.addMapping("/");
         dispatcherReg.setLoadOnStartup(0);
     }
+    // TODO: 2023/11/30 filter 
+//    public static void registerFilters(ServletContext servletContext) {
+//        var applicationContext = ApplicationContextUtils.getRequiredApplicationContext();
+//        for (var filterRegBean : applicationContext.findBeans(FilterRegistrationBean.class)) {
+//            List<String> urlPatterns = filterRegBean.getUrlPatterns();
+//            if (urlPatterns == null || urlPatterns.isEmpty()) {
+//                throw new IllegalArgumentException("No url patterns for {}" + filterRegBean.getClass().getName());
+//            }
+//            var filter = Objects.requireNonNull(filterRegBean.getFilter(), "FilterRegistrationBean.getFilter() must not return null.");
+//            logger.info("register filter '{}' {} for URLs: {}", filterRegBean.getName(), filter.getClass().getName(), String.join(", ", urlPatterns));
+//            var filterReg = servletContext.addFilter(filterRegBean.getName(), filter);
+//            filterReg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPatterns.toArray(String[]::new));
+//        }
+//    }
     /**
      * Try load property resolver from /application.yml or /application.properties.
      */

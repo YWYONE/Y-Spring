@@ -25,7 +25,7 @@ public class WebMvcConfiguration {
                                @Value("${summer.web.freemarker.template-encoding:UTF-8}") String templateEncoding) {
         return new FreeMarkerViewResolver(servletContext, templatePath, templateEncoding);
     }
-
+    //ioc container need a servletContext 's pointer
     @Bean
     ServletContext servletContext() {
         return Objects.requireNonNull(servletContext, "ServletContext is not set.");

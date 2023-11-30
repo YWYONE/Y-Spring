@@ -26,7 +26,7 @@ public class ContextLoaderInitializer implements ServletContainerInitializer {
         //setup Ioc Container
         Container container=new Container(this.configClass,this.propertyResolver);
         //set up Filter and DispatcherServlet:
-        WebUtils.registerFilters(servletContext);
+        //WebUtils.registerFilters(servletContext);
         WebUtils.registerDispatcherServlet(servletContext, this.propertyResolver);
 
     }
