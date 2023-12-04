@@ -48,6 +48,7 @@ public class ResourceResolver {
                 URL url = urls.nextElement();
                 URI uri = url.toURI();
                 String urlString = URLDecoder.decode(url.toString(), StandardCharsets.UTF_8);
+                urlString=removeTrailingSlash(urlString);
                 String baseUrlString = urlString.substring(0, urlString.length() - relativePath.length());
                 if (baseUrlString.startsWith("file:")) {
                     baseUrlString=baseUrlString.substring(5);
@@ -101,5 +102,11 @@ public class ResourceResolver {
             cl = getClass().getClassLoader();
         }
         return cl;
+    }
+    String removeTrailingSlash(String s) {
+        if (s.endsWith("/") || s.endsWith("\\")) {
+            s = s.substring(0, s.length() - 1);
+        }
+        return s;
     }
 }

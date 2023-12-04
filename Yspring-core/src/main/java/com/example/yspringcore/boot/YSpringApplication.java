@@ -17,7 +17,10 @@ import java.util.Set;
 
 @Slf4j
 public class YSpringApplication {
-    public void start(String webDir, String baseDir, Class<?> configClass) throws Exception{
+    public  static  void run(String webDir, String baseDir, Class<?> configClass, String... args) throws Exception {
+        new YSpringApplication().start(webDir, baseDir, configClass, args);
+    }
+    public void start(String webDir, String baseDir, Class<?> configClass,String... args) throws Exception{
         final long startTime = System.currentTimeMillis();
         final int javaVersion = Runtime.version().feature();
         final long pid = ManagementFactory.getRuntimeMXBean().getPid();
@@ -35,7 +38,7 @@ public class YSpringApplication {
         server.await();
     }
     public Server startTomcat(String webDir, String baseDir,Class<?> configClass, PropertyResolver propertyResolver) throws  Exception{
-        int port =propertyResolver.getProperty("${server.port:8080}",int.class);
+        int port =propertyResolver.getProperty("${server.port:8089}",int.class);
         log.info("start tomcat at port{}",port);
         Tomcat tomcat=new Tomcat();
         tomcat.setPort(port);
