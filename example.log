@@ -1,0 +1,135 @@
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'a' as  singleton: com.example.yspringcore.aop.test.A
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'beforeExampleHandler' as  singleton: com.example.yspringcore.aop.test.BeforeExampleHandler
+INFO main com.example.yspringcore.aop.resolver.ProxyResolver - create proxy for bean com.example.yspringcore.aop.test.A @33c7e1bb
+INFO main com.example.yspringcore.ioc.context.Container - Bean 'a' was replaced by post processor com.example.yspringcore.aop.processor.AroundProxyBeanPostProcessor.
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before toString()
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before toString()
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before toString()
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before toString()
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before toString()
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before toString()
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before toString()
+INFO main com.example.yspringcore.aop.test.BeforeExampleHandler - before run()
+ontainer - scan pkg com.example.yspringcore.ioc.test
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/AA.class, name=com/example/yspringcore/ioc/test/AA.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/ConfigurationC.class, name=com/example/yspringcore/ioc/test/ConfigurationC.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/IocTest.class, name=com/example/yspringcore/ioc/test/IocTest.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/User.class, name=com/example/yspringcore/ioc/test/User.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/B.class, name=com/example/yspringcore/ioc/test/B.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/D.class, name=com/example/yspringcore/ioc/test/D.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/ResourceScanTest.class, name=com/example/yspringcore/ioc/test/ResourceScanTest.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/A.class, name=com/example/yspringcore/ioc/test/A.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/Application.class, name=com/example/yspringcore/ioc/test/Application.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/BB.class, name=com/example/yspringcore/ioc/test/BB.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/Test1.class, name=com/example/yspringcore/ioc/test/Test1.class]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.User
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=user, beanClass=com.example.yspringcore.ioc.test.User, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.A
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=a, beanClass=com.example.yspringcore.ioc.test.A, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.B
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=b, beanClass=com.example.yspringcore.ioc.test.B, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.AA
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=aA, beanClass=com.example.yspringcore.ioc.test.AA, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.BB
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=bB, beanClass=com.example.yspringcore.ioc.test.BB, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.ConfigurationC
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=configurationC, beanClass=com.example.yspringcore.ioc.test.ConfigurationC, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=getD1, beanClass=com.example.yspringcore.ioc.test.D, factory=ConfigurationC.getD1(), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=getD2, beanClass=com.example.yspringcore.ioc.test.D, factory=ConfigurationC.getD2(), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'configurationC' as  singleton: com.example.yspringcore.ioc.test.ConfigurationC
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'aA' as  singleton: com.example.yspringcore.ioc.test.AA
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'bB' as  singleton: com.example.yspringcore.ioc.test.BB
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'a' as  singleton: com.example.yspringcore.ioc.test.A
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'b' as  singleton: com.example.yspringcore.ioc.test.B
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'getD1' as  singleton: com.example.yspringcore.ioc.test.D
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'user' as  singleton: com.example.yspringcore.ioc.test.User
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'getD2' as  singleton: com.example.yspringcore.ioc.test.D
+INFO main com.example.yspringcore.ioc.context.Container - component scan in pkg :[com.example.yspringcore.ioc.test]
+INFO main com.example.yspringcore.ioc.context.Container - scan pkg com.example.yspringcore.ioc.test
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/AA.class, name=com/example/yspringcore/ioc/test/AA.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/ConfigurationC.class, name=com/example/yspringcore/ioc/test/ConfigurationC.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/IocTest.class, name=com/example/yspringcore/ioc/test/IocTest.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/User.class, name=com/example/yspringcore/ioc/test/User.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/B.class, name=com/example/yspringcore/ioc/test/B.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/D.class, name=com/example/yspringcore/ioc/test/D.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/ResourceScanTest.class, name=com/example/yspringcore/ioc/test/ResourceScanTest.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/A.class, name=com/example/yspringcore/ioc/test/A.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/Application.class, name=com/example/yspringcore/ioc/test/Application.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/InterfaceTest.class, name=com/example/yspringcore/ioc/test/InterfaceTest.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/BB.class, name=com/example/yspringcore/ioc/test/BB.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/ioc/test/Test1.class, name=com/example/yspringcore/ioc/test/Test1.class]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.User
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=user, beanClass=com.example.yspringcore.ioc.test.User, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.A
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=a, beanClass=com.example.yspringcore.ioc.test.A, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.B
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=b, beanClass=com.example.yspringcore.ioc.test.B, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.AA
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=aA, beanClass=com.example.yspringcore.ioc.test.AA, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.BB
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=bB, beanClass=com.example.yspringcore.ioc.test.BB, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.ioc.test.ConfigurationC
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=configurationC, beanClass=com.example.yspringcore.ioc.test.ConfigurationC, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=getD1, beanClass=com.example.yspringcore.ioc.test.D, factory=ConfigurationC.getD1(), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=getD2, beanClass=com.example.yspringcore.ioc.test.D, factory=ConfigurationC.getD2(), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'configurationC' as  singleton: com.example.yspringcore.ioc.test.ConfigurationC
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'aA' as  singleton: com.example.yspringcore.ioc.test.AA
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'bB' as  singleton: com.example.yspringcore.ioc.test.BB
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'a' as  singleton: com.example.yspringcore.ioc.test.A
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'b' as  singleton: com.example.yspringcore.ioc.test.B
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'getD1' as  singleton: com.example.yspringcore.ioc.test.D
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'user' as  singleton: com.example.yspringcore.ioc.test.User
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'getD2' as  singleton: com.example.yspringcore.ioc.test.D
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 22791 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.properties
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8080
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 22862 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.properties
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8080
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 23092 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 23261 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8080
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 25390 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8080
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 25478 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8080
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 25641 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8080
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 25863 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 26031 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 26488 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 26555 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 27609 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 27865 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 27907 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089

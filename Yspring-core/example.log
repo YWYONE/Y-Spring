@@ -1,0 +1,92 @@
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 28499 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.ioc.context.Container - component scan in pkg :[com.example.yspringcore.boot.test]
+INFO main com.example.yspringcore.ioc.context.Container - scan pkg com.example.yspringcore.boot.test
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=om/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=om/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=com/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=com/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.context.Container - class found by import: com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 29216 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.ioc.context.Container - component scan in pkg :[com.example.yspringcore.boot.test]
+INFO main com.example.yspringcore.ioc.context.Container - scan pkg com.example.yspringcore.boot.test
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=om/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=om/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=com/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=com/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.context.Container - class found by import: com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 29486 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.ioc.context.Container - component scan in pkg :[com.example.yspringcore.boot.test]
+INFO main com.example.yspringcore.ioc.context.Container - scan pkg com.example.yspringcore.boot.test
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=com/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=com/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=com/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=com/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.context.Container - class found by import: com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.boot.test.Contr
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=contr, beanClass=com.example.yspringcore.boot.test.Contr, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=webMvcConfiguration, beanClass=com.example.yspringcore.web.WebMvcConfiguration, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=servletContext, beanClass=jakarta.servlet.ServletContext, factory=WebMvcConfiguration.servletContext(), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=viewResolver, beanClass=com.example.yspringcore.web.ViewResolver, factory=WebMvcConfiguration.viewResolver(ServletContext, String, String), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.boot.test.HelloConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=helloConfiguration, beanClass=com.example.yspringcore.boot.test.HelloConfiguration, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'webMvcConfiguration' as  singleton: com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'helloConfiguration' as  singleton: com.example.yspringcore.boot.test.HelloConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'viewResolver' as  singleton: com.example.yspringcore.web.ViewResolver
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'servletContext' as  singleton: jakarta.servlet.ServletContext
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - summer.web.freemarker.template-path 's value not found
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - summer.web.freemarker.template-encoding 's value not found
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'contr' as  singleton: com.example.yspringcore.boot.test.Contr
+INFO main com.example.yspringcore.web.FreeMarkerViewResolver - init FreeMarkerViewResolver, set template path: /WEB-INF/templates
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - y-spring.web.static-path 's value not found
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - y-spring.web.favicon-path 's value not found
+INFO main com.example.yspringcore.web.utils.WebUtils - register servlet com.example.yspringcore.web.DispatcherServlet for URL '/'
+INFO main com.example.yspringcore.web.DispatcherServlet - init com.example.yspringcore.web.DispatcherServlet
+INFO main com.example.yspringcore.web.DispatcherServlet - add MVC controller 'contr': com.example.yspringcore.boot.test.Contr
+INFO main com.example.yspringcore.web.Processor - mapping / to handler Contr.funa
+INFO main com.example.yspringcore.boot.YSpringApplication - Tomcat started at port 8089...
+INFO main com.example.yspringcore.boot.YSpringApplication - Started HelloConfiguration in 0.912 seconds (process running for 1.038)
+INFO main com.example.yspringcore.boot.YSpringApplication - Starting HelloConfiguration using Java 17 with PID 29507 (started by yangweiyi in /Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core)
+INFO main com.example.yspringcore.web.utils.WebUtils - load config: /application.yml
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - server.port 's value not found
+INFO main com.example.yspringcore.boot.YSpringApplication - start tomcat at port8089
+INFO main com.example.yspringcore.ioc.context.Container - component scan in pkg :[com.example.yspringcore.boot.test]
+INFO main com.example.yspringcore.ioc.context.Container - scan pkg com.example.yspringcore.boot.test
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=com/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=com/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/Contr.class, name=com/example/yspringcore/boot/test/Contr.class]
+INFO main com.example.yspringcore.ioc.scan.ResourceResolver - find resource: Resource[path=file:/Users/yangweiyi/IdeaProjects/Y-Spring/Yspring-core/target/classes/com/example/yspringcore/boot/test/HelloConfiguration.class, name=com/example/yspringcore/boot/test/HelloConfiguration.class]
+INFO main com.example.yspringcore.ioc.context.Container - class found by import: com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.boot.test.Contr
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=contr, beanClass=com.example.yspringcore.boot.test.Contr, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=webMvcConfiguration, beanClass=com.example.yspringcore.web.WebMvcConfiguration, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=viewResolver, beanClass=com.example.yspringcore.web.ViewResolver, factory=WebMvcConfiguration.viewResolver(ServletContext, String, String), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=servletContext, beanClass=jakarta.servlet.ServletContext, factory=WebMvcConfiguration.servletContext(), init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - found component :com.example.yspringcore.boot.test.HelloConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - define bean BeanDefinition [name=helloConfiguration, beanClass=com.example.yspringcore.boot.test.HelloConfiguration, factory=null, init-method=null, destroy-method=null, primary=false, instance=null]
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'webMvcConfiguration' as  singleton: com.example.yspringcore.web.WebMvcConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'helloConfiguration' as  singleton: com.example.yspringcore.boot.test.HelloConfiguration
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'viewResolver' as  singleton: com.example.yspringcore.web.ViewResolver
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'servletContext' as  singleton: jakarta.servlet.ServletContext
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - summer.web.freemarker.template-path 's value not found
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - summer.web.freemarker.template-encoding 's value not found
+INFO main com.example.yspringcore.ioc.context.Container - Try create bean 'contr' as  singleton: com.example.yspringcore.boot.test.Contr
+INFO main com.example.yspringcore.web.FreeMarkerViewResolver - init FreeMarkerViewResolver, set template path: /WEB-INF/templates
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - y-spring.web.static-path 's value not found
+INFO main com.example.yspringcore.ioc.scan.PropertyResolver - y-spring.web.favicon-path 's value not found
+INFO main com.example.yspringcore.web.utils.WebUtils - register servlet com.example.yspringcore.web.DispatcherServlet for URL '/'
+INFO main com.example.yspringcore.web.DispatcherServlet - init com.example.yspringcore.web.DispatcherServlet
+INFO main com.example.yspringcore.web.DispatcherServlet - add MVC controller 'contr': com.example.yspringcore.boot.test.Contr
+INFO main com.example.yspringcore.web.Processor - mapping / to handler Contr.funa
+INFO main com.example.yspringcore.boot.YSpringApplication - Tomcat started at port 8089...
+INFO main com.example.yspringcore.boot.YSpringApplication - Started HelloConfiguration in 0.951 seconds (process running for 1.069)

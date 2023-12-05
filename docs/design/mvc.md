@@ -6,6 +6,10 @@ support ViewResolver
 ## Overview
 ![img.png](img.png)
 //todo FilterRegistrationBean
-## Setup process
+## DispatcherServlet
+matains processors  
+one processor -> a controller's method -> a url
+## FreeMarkerViewResolver
+
 
 
