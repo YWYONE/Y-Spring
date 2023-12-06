@@ -10,6 +10,9 @@ import com.example.yspringcore.web.WebMvcConfiguration;
 
 import java.util.Set;
 
+/**
+ * servlet container set up listener
+ */
 public class ContextLoaderInitializer implements ServletContainerInitializer {
     final Class<?> configClass;
     final PropertyResolver propertyResolver;
@@ -21,7 +24,7 @@ public class ContextLoaderInitializer implements ServletContainerInitializer {
 
     @Override
     public void onStartup(Set<Class<?>> set, ServletContext servletContext) throws ServletException {
-        //setup servletcontext
+        //pass servletcontext pointer to ioc
         WebMvcConfiguration.setServletContext(servletContext);
         //setup Ioc Container
         Container container=new Container(this.configClass,this.propertyResolver);

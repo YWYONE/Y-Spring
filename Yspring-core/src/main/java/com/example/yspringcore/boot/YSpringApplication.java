@@ -37,6 +37,16 @@ public class YSpringApplication {
         log.info("Started {} in {} seconds (process running for {})", configClass.getSimpleName(), appTime, jvmTime);
         server.await();
     }
+
+    /**
+     *
+     * @param webDir webapp directory
+     * @param baseDir application class file directory
+     * @param configClass
+     * @param propertyResolver
+     * @return
+     * @throws Exception
+     */
     public Server startTomcat(String webDir, String baseDir,Class<?> configClass, PropertyResolver propertyResolver) throws  Exception{
         int port =propertyResolver.getProperty("${server.port:8089}",int.class);
         log.info("start tomcat at port{}",port);
